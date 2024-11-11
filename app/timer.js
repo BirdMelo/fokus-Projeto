@@ -24,14 +24,13 @@ function toggleButton(toggle, img){
 }
 const countdown = () => {
     if (breakTime <= 0) {
-        // timeoutSong.play();
+        timeoutSong.play();
         clearTime();
         setBreakTime(5)
         toggleButton('Começar', '../imagens/play_arrow.png')
         return;
     }
     setBreakTime(breakTime - 1)
-    // console.log(`temporizador: ${breakTime}`);
 };
 function clearTime() {
     clearInterval(interval);
