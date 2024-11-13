@@ -1,3 +1,5 @@
+import { updateTask } from "./script.js"
+
 export function addTask(task){
     const li = document.createElement('li')
     li.classList.add('app__section-task-list-item')
@@ -12,10 +14,21 @@ export function addTask(task){
     const p = document.createElement('p')
     p.classList.add('app__section-task-list-item-description')
     p.textContent = task.description
+
     const button = document.createElement('button')
     button.classList.add('app_button-edit')
+    button.onclick = () =>{
+        const newDescription = prompt("Qual é o novo nome da tarefa?")
+        if(newDescription){
+            p.textContent = newDescription
+            task.description = newDescription
+            updateTask()
+        }
+    }
+
     const img_btn = document.createElement('img')
     img_btn.setAttribute('src', '../imagens/edit.png')
+
     button.append(img_btn)
     li.append(svg)
     li.append(p)

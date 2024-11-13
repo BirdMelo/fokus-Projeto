@@ -42,6 +42,11 @@ showTimer()
 
 addTask_btn.addEventListener('click', ()=> {
     addTask_form.classList.toggle('hidden')
+    if(addTask_form.classList.contains('hidden')){
+        addTask_form.setAttribute('aria-hidden', 'true')
+    }else{
+        addTask_form.setAttribute('aria-hidden', 'false')
+    }
 })
 addTask_form.addEventListener('submit', (event)=> {
     event.preventDefault()
@@ -50,7 +55,7 @@ addTask_form.addEventListener('submit', (event)=> {
     }
     tasksList.push(task)
     tasksUL.append(addTask(task))
-    localStorage.setItem('tasks', JSON.stringify(tasksList))
+    updateTask();
     textarea.value = ''
     addTask_form.classList.toggle('hidden')
 })
@@ -58,3 +63,7 @@ addTask_form.addEventListener('submit', (event)=> {
 tasksList.forEach(task => {
     tasksUL.append(addTask(task))
 });
+
+export function updateTask() {
+    localStorage.setItem('tasks', JSON.stringify(tasksList));
+}
