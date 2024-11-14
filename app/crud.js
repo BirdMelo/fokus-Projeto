@@ -1,5 +1,8 @@
 import { updateTask } from "./script.js"
 
+const active_task_description = document.querySelector('.app__section-active-task-description')
+let selectTask = null
+let selectTaskLI = null
 export function addTask(task){
     const li = document.createElement('li')
     li.classList.add('app__section-task-list-item')
@@ -33,5 +36,28 @@ export function addTask(task){
     li.append(svg)
     li.append(p)
     li.append(button)
+    li.onclick = () =>{
+        document.querySelectorAll('.app__section-task-list-item-active')
+        .forEach(item =>{
+            item.classList.remove('app__section-task-list-item-active')
+        })
+        if(selectTask == task){
+            active_task_description.textContent = ''
+            selectTask = null
+            selectTaskLI = null
+            return
+        }
+        selectTask = task
+        selectTaskLI = li
+        active_task_description.textContent = task.description
+        li.classList.add('app__section-task-list-item-active')
+    }
     return li
 }
+document.addEventListener('FocoFinalizado', ()=>{
+    if(selectTask && selectTaskLI){
+        selectTaskLI.classList.remove('app__section-task-list-item-active')
+        selectTaskLI.classList.add('app__section-task-list-item-complete')
+        selectTaskLI.querySelector('button').setAttribute('disabled','disabled')
+    }
+})

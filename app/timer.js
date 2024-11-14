@@ -1,3 +1,4 @@
+import { fokusTime, html, longBreakTime, shortBreakTime } from "./script.js"
 import { toggleTimer, breakTime, setBreakTime } from "./script.js"
 
 const playSong = new Audio('../sons/play.wav')
@@ -24,9 +25,21 @@ function toggleButton(toggle, img){
 }
 const countdown = () => {
     if (breakTime <= 0) {
-        timeoutSong.play();
+        // timeoutSong.play();
+        const html_dataContext = html.getAttribute('data-contexto')
+        switch (html_dataContext){
+            case 'foco':
+                setBreakTime(fokusTime)
+                const event = new CustomEvent('FocoFinalizado')
+                document.dispatchEvent(event)
+                break;
+            case 'descanso-curto':
+                setBreakTime(shortBreakTime)
+                break;
+            case 'descanso-longo':
+                setBreakTime(longBreakTime)
+        }
         clearTime();
-        setBreakTime(5)
         toggleButton('Começar', '../imagens/play_arrow.png')
         return;
     }
