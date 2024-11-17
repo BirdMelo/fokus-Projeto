@@ -1,6 +1,7 @@
-import { updateTask } from "./script.js"
-
+import { updateTask, tasksList} from "./script.js"
 const active_task_description = document.querySelector('.app__section-active-task-description')
+const removeCompletes = document.querySelector('#btn-remover-concluidas')
+const removeAll = document.querySelector('#btn-remover-todas')
 let selectTask = null
 let selectTaskLI = null
 export function addTask(task){
@@ -20,6 +21,27 @@ export function addTask(task){
 
     const button = document.createElement('button')
     button.classList.add('app_button-edit')
+    if(task.complete){
+        li.classList.add('app__section-task-list-item-complete')
+        button.setAttribute('disabled','disabled')
+    } else{
+        li.onclick = () =>{
+            document.querySelectorAll('.app__section-task-list-item-active')
+            .forEach(item =>{
+                item.classList.remove('app__section-task-list-item-active')
+            })
+            if(selectTask == task){
+                active_task_description.textContent = ''
+                selectTask = null
+                selectTaskLI = null
+                return
+            }
+            selectTask = task
+            selectTaskLI = li
+            active_task_description.textContent = task.description
+            li.classList.add('app__section-task-list-item-active')
+        }
+    }
     button.onclick = () =>{
         const newDescription = prompt("Qual é o novo nome da tarefa?")
         if(newDescription){
@@ -36,22 +58,7 @@ export function addTask(task){
     li.append(svg)
     li.append(p)
     li.append(button)
-    li.onclick = () =>{
-        document.querySelectorAll('.app__section-task-list-item-active')
-        .forEach(item =>{
-            item.classList.remove('app__section-task-list-item-active')
-        })
-        if(selectTask == task){
-            active_task_description.textContent = ''
-            selectTask = null
-            selectTaskLI = null
-            return
-        }
-        selectTask = task
-        selectTaskLI = li
-        active_task_description.textContent = task.description
-        li.classList.add('app__section-task-list-item-active')
-    }
+    
     return li
 }
 document.addEventListener('FocoFinalizado', ()=>{
@@ -59,5 +66,18 @@ document.addEventListener('FocoFinalizado', ()=>{
         selectTaskLI.classList.remove('app__section-task-list-item-active')
         selectTaskLI.classList.add('app__section-task-list-item-complete')
         selectTaskLI.querySelector('button').setAttribute('disabled','disabled')
+        selectTask.complete = true
+        updateTask()
     }
 })
+const removeTask = (onlyCompletes) => {
+    const selector = onlyCompletes ? '.app__section-task-list-item-complete': '.app__section-task-list-item'
+    document.querySelectorAll(selector).forEach(element => {
+        element.remove()
+    })
+    onlyCompletes ? tasksList.splice(0, tasksList.length, ...tasksList.filter(task => !task.complete)) : tasksList.length = 0
+    
+    updateTask()
+}
+removeCompletes.onclick = () => removeTask(true)
+removeAll.onclick = () => removeTask(false)

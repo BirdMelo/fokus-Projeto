@@ -14,7 +14,7 @@ const toggleSong = document.querySelector('#alternar-musica')
 const addTask_btn = document.querySelector('.app__button--add-task')
 const addTask_form = document.querySelector('.app__form-add-task')
 const textarea = document.querySelector('.app__form-textarea')
-const tasksList = JSON.parse(localStorage.getItem('tasks')) || []
+export let tasksList = JSON.parse(localStorage.getItem('tasks')) || []
 const tasksUL = document.querySelector('.app__section-task-list')
 
 export const fokusTime = 1500
